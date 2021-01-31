@@ -1,0 +1,23 @@
+{
+  "title": "Mon Petit Potager",
+  "login.pick_lang": "Choisissez votre langue",
+  "login.email": "Adresse Électronique",
+  "login.mdp": "Mot de Passe",
+  "login.btn_connecter": "Se Connecter",
+  "login.btn_enregister": "S'enregistrer",
+  "login.pwd_forgotten": "Mot de Passe oublié ? ",
+  "login.click_here": "Cliquez ici",
+  "lang.francais": "Français",
+  "lang.corse": "Corse",
+  "lang.basque": "Basque",
+  "potager.search_placeholder": "Recherche légume, graine ou fruit",
+  "potager.titre": "Les potagers près de chez vous",
+  "potager.aucun": "Aucun potager dans les alentours",
+  "geo.not_found": "Veuillez appuyer sur le bouton de géolocalition",
+  "geo.disabled": "Les services de géolocalisation sont désactivés",
+  "geo.denied_forever": "Les permissions ont été réfusées, impossible de continuer sans la permission de géolocalisation",
+  "geo.denied": "Les permissions ont été réfusées",
+  "geo.antispam.one": "Vous pourrez rafraîchir votre position dans {value} minute",
+  "geo.antispam.other": "Vous pourrez rafraîchir votre position dans {value} minutes",
+  "messenger.not_verified": "Afin de pouvoir utiliser la messagerie, veuillez vérifier votre compte"
+}

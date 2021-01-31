@@ -1,0 +1,8 @@
+include: package:strict_analyzer/analysis_options.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: true
+  errors:
+    implicit_dynamic_parameter: warning
+    only_throw_errors: warning

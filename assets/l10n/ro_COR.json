@@ -1,0 +1,23 @@
+{
+  "title": "U mo picculu ortu",
+  "login.pick_lang": "Sceglite a vostra lingua",
+  "login.email": "Indirizzu mail",
+  "login.mdp": "Codice",
+  "login.btn_connecter": "Per accede",
+  "login.btn_enregister": "Iscrizzione",
+  "login.pwd_forgotten": "Dimenticatu a vostra chjave d'intesa ? ",
+  "login.click_here": "Cliccate quì",
+  "lang.francais": "Francese",
+  "lang.corse": "Corsu",
+  "lang.basque": "Vascu",
+  "potager.search_placeholder": "Circate ligumi, sementi o frutti",
+  "potager.titre": "Ortaggi vicinu à voi",
+  "potager.aucun": "Nisun ortu vicinu",
+  "geo.not_found": "Per piacè preme u buttone di geolocalizazione",
+  "geo.disabled": "I servizii di geolocalizazione sò disattivati",
+  "geo.denied_forever": "L'autorizzazioni sò state nigate, ùn ponu micca cuntinuà senza permessu di geolocalizazione",
+  "geo.denied": "L'autorizzazioni sò state nigate",
+  "geo.antispam.one": "Puderete rinfriscà a vostra pusizione in {value} minutu",
+  "geo.antispam.other": "Puderete rinfriscà a vostra pusizione in {value} minuti",
+  "messenger.not_verified": "Per pudè aduprà a messageria, per piacè verificate u vostru contu"
+}

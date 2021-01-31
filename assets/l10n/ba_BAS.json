@@ -1,0 +1,23 @@
+{
+  "title": "Nire baratze txikia",
+  "login.pick_lang": "Aukeratu zure hizkuntza",
+  "login.email": "Posta elektroniko helbidea",
+  "login.mdp": "Pasahitza",
+  "login.btn_connecter": "Saioa hasteko",
+  "login.btn_enregister": "Izena eman",
+  "login.pwd_forgotten": "Zure pasahitza ahaztu duzu ? ",
+  "login.click_here": "Klikatu hemen",
+  "lang.francais": "Frantsesa",
+  "lang.corse": "Korsikarra",
+  "lang.basque": "Euskara",
+  "potager.search_placeholder": "Bilatu barazkiak, haziak edo frutak",
+  "potager.titre": "Zure inguruko baratzeak",
+  "potager.aucun": "Inguruan ez dago baratzerik",
+  "geo.not_found": "Mesedez, sakatu geolokalizazio botoia",
+  "geo.disabled": "Geolokalizazio zerbitzuak desgaituta daude",
+  "geo.denied_forever": "Baimenak ukatu dira, ezin dira geolokalizazio baimenik gabe jarraitu",
+  "geo.denied": "Baimenak ukatu egin dira",
+  "geo.antispam.one": "Zure kokapena minutu {value} barru freskatu ahal izango duzu",
+  "geo.antispam.other": "Zure kokapena {value} minututan freskatu ahal izango duzu",
+  "messenger.not_verified": "Mezularitza erabili ahal izateko, egiaztatu zure kontua"
+}
