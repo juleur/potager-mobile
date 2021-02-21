@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
+import './../../../../management/translation/translation_provider.dart';
 import './../../../../models/nearest_potager_model.dart';
-import './../../../../views/potager/potager.dart';
+import './../../../potager/potager_view.dart';
+import './.././../../../views/homepage/states/nearest_potagers_state.dart';
 
-class CardPotager extends StatelessWidget {
+//ignore: must_be_immutable
+class CardPotager extends ConsumerWidget {
   const CardPotager(this._np, {Key key}) : super(key: key);
 
   final NearestPotager _np;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final translate = watch(translationStateNotifierProvider.state);
+
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute<PotagerView>(
-          builder: (context) => PotagerView(potagerId: _np.user.id),
-        ),
-      ),
+      onTap: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute<PotagerView>(
+            builder: (context) => PotagerView(potagerId: _np.farmer.id),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -26,12 +34,15 @@ class CardPotager extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Image.network(
-                  'https://placeimg.com/640/480/any',
-                  height: 120,
-                  fit: BoxFit.fill,
+              child: Hero(
+                tag: 'potager_${_np.user.username}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.network(
+                    _np.farmer.imgUrl,
+                    height: 120,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),
@@ -61,16 +72,20 @@ class CardPotager extends StatelessWidget {
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/icons/picto_geolocalisation.png',
-                    width: 20,
-                    height: 20,
-                    color: const Color.fromRGBO(50, 159, 91, 1),
-                  ),
-                  const Text('2.9 km - Commune')
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/icons/picto_geolocalisation.png',
+                      width: 20,
+                      height: 20,
+                      color: const Color.fromRGBO(50, 159, 91, 1),
+                    ),
+                    const SizedBox(width: 3),
+                    Text(_np.farmer.commune),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -84,38 +99,27 @@ class CardPotager extends StatelessWidget {
                       Row(
                         children: [
                           getIcon(_np.fruitsCount),
-                          const Text('Fruits'),
+                          Text(translate['potager.menu_fruits']),
                         ],
                       ),
                       Row(
                         children: [
                           getIcon(_np.legumesCount),
-                          const Text('Légumes'),
+                          Text(translate['potager.menu_legumes']),
                         ],
                       ),
                       Row(
                         children: [
                           getIcon(_np.grainesCount),
-                          const Text('Graines'),
+                          Text(translate['potager.menu_graines']),
                         ],
                       )
                     ],
                   ),
                   const Spacer(),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color.fromRGBO(255, 130, 0, 1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        'assets/icons/picto_favori.png',
-                        color: const Color.fromRGBO(255, 255, 255, 1),
-                      ),
-                    ),
+                  FavoriteButton(
+                    _np.farmer.id,
+                    _np.farmer.favorite,
                   ),
                 ],
               ),
@@ -124,6 +128,80 @@ class CardPotager extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+//ignore: must_be_immutable
+class FavoriteButton extends StatefulWidget {
+  FavoriteButton(this.farmerId, this.favorite, {Key key}) : super(key: key);
+  final int farmerId;
+  bool favorite;
+
+  @override
+  _FavoriteButtonState createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.favorite) {
+      return InkWell(
+        onTap: () async {
+          if (await context
+              .read(homeRepositoryProvider)
+              .deleteFavoritePotager(widget.farmerId)) {
+            setState(() {
+              widget.favorite = !widget.favorite;
+            });
+          }
+        },
+        child: Container(
+          height: 45,
+          width: 45,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color.fromRGBO(255, 130, 0, 1),
+            ),
+            color: const Color.fromRGBO(255, 255, 255, 1),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/icons/picto_favori_fill.png',
+              color: const Color.fromRGBO(255, 130, 0, 1),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return InkWell(
+        onTap: () async {
+          if (await context
+              .read(homeRepositoryProvider)
+              .addFavoritePotager(widget.farmerId)) {
+            setState(() {
+              widget.favorite = !widget.favorite;
+            });
+          }
+        },
+        child: Container(
+          height: 45,
+          width: 45,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromRGBO(255, 130, 0, 1),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/icons/picto_favori.png',
+              color: const Color.fromRGBO(255, 255, 255, 1),
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
 

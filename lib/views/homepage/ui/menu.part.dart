@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:potager/views/homepage/states/geo_commune_state.dart';
 import './../../../management/dialog/flushbar_state_notifier.dart';
-import './../../../management/geolocaliton/osm_provider.dart';
 import './../../../management/messenger/messenger_service_provider.dart';
 import './../../../management/translation/translation_provider.dart';
 import './../../../views/homepage/states/anti_spam_geo_state.dart';
+import './../../../views/homepage/states/geo_commune_state.dart';
 
 class Menu extends StatelessWidget {
   const Menu({Key key}) : super(key: key);
@@ -13,7 +12,6 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
       height: 60,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,17 +68,23 @@ class Geolocalisation extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 6),
-        Consumer(
-          builder: (_, watch, __) {
-            final commune = watch(communeStateNotifierProvider.state);
-            return Text(
-              commune,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            );
-          },
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 180),
+          child: Consumer(
+            builder: (_, watch, __) {
+              final String commune = watch(communeStateNotifierProvider.state);
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  commune,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

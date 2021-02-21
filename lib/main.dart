@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import './views/bootstrap_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await const FlutterSecureStorage().deleteAll();
   //#### A RETIRER ####
   ImageCache().clear();
   //###################

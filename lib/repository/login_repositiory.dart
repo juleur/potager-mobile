@@ -28,23 +28,16 @@ class LoginRepository {
     final String body =
         jsonEncode({'identifiant': identifiant, 'password': password});
 
-    try {
-      final dynamic response =
-          await _read(dioDefaultProvider).post<dynamic>(loginPath, data: body);
+    final response =
+        await _read(dioDefaultProvider).post<dynamic>(loginPath, data: body);
 
+    if (response.statusCode == 200) {
       final Tokens tokens = Tokens.fromJson(response.data);
-
       await _read(userServiceProvider).updateTokens(tokens);
-      // await _read(userServiceProvider)
-      //     .addCoordonnees(46.86106140409114, 2.8391972556114204);
-      // await _read(userServiceProvider).addCommune('Sagonne');
-
       _read(userStatusStateProvider).state = UserStatus.loggedIn;
-
       return true;
-    } on DioError {
-      return false;
     }
+    return false;
   }
 
   Future<bool> forgottenPassword(String email) async {

@@ -1,45 +1,5 @@
 import 'package:meta/meta.dart';
 
-enum UniteMesure {
-  botte,
-  kilogramme,
-  piece,
-}
-
-extension UniteMesureExtension on UniteMesure {
-  static const names = {
-    UniteMesure.botte: 'Botte',
-    UniteMesure.kilogramme: 'Kg',
-    UniteMesure.piece: 'Piece'
-  };
-
-  String get name => names[this];
-  UniteMesure find(String unit) {
-    for (final u in UniteMesure.values) {
-      if (u.name == unit) {
-        return u;
-      }
-    }
-    return UniteMesure.piece;
-  }
-}
-
-enum SystemeEchange {
-  don,
-  troc,
-  vente,
-}
-
-extension SystemeEchangeExtension on SystemeEchange {
-  static const names = {
-    SystemeEchange.don: 'Don',
-    SystemeEchange.troc: 'Troc',
-    SystemeEchange.vente: 'Vente',
-  };
-
-  String get name => names[this];
-}
-
 class Aliment {
   Aliment({
     @required this.id,
@@ -53,36 +13,31 @@ class Aliment {
   });
 
   factory Aliment.fromJson(Map<String, dynamic> json) {
-    UniteMesure unit;
-    for (final u in UniteMesure.values) {
-      if (u.name == json['uniteMesure']) unit = u;
-    }
-    final List<SystemeEchange> systemeEchange = [];
-
-    for (final v in json['systemeEchange'] as List<dynamic>) {
-      for (final se in SystemeEchange.values) {
-        if (se.name == v) systemeEchange.add(se);
-      }
-    }
+    final List<int> se =
+        (json['systemeEchange'] as List<dynamic>).map((v) => v as int).toList();
 
     return Aliment(
       id: json['id'] as int,
       imgUrl: json['imgUrl'] != null ? json['imgUrl'] as String : null,
       nom: json['nom'] as String,
       variete: json['variete'] as String,
-      uniteMesure: unit,
-      systemeEchange: systemeEchange,
+      uniteMesure: json['uniteMesure'] as int,
+      systemeEchange: se,
       prix: json['prix'] != null ? json['prix'] as double : null,
       stock: json['stock'] as int,
     );
   }
 
+  @override
+  String toString() =>
+      '{id: $id, imgUrl: $imgUrl, nom: $nom, variete: $variete, uniteMesure: $uniteMesure, systemeEchange: $systemeEchange, prix: $prix, stock: $stock}';
+
   final int id;
   final String imgUrl;
   final String nom;
   final String variete;
-  final UniteMesure uniteMesure;
-  final List<SystemeEchange> systemeEchange;
+  final int uniteMesure;
+  final List<int> systemeEchange;
   final double prix;
   final int stock;
 }

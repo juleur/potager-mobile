@@ -28,6 +28,7 @@ class PotagersInput extends ConsumerWidget {
           }
           if (text.isEmpty) {
             context.read(searchBarProvider).state = SearchBarStatus.inactive;
+            context.read(nearestAlimentsStateNotifier).resetState();
           }
         },
         inputFormatters: [

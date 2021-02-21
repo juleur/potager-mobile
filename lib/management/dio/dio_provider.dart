@@ -23,5 +23,6 @@ final dioFullProvider = Provider<Dio>((ref) {
   dio.interceptors.add(RetryOnConnectionChangeInterceptor(
     DioConnectivityRequestRetrier(ref.read),
   ));
+  dio.interceptors.add(ErrorsInterceptor(ref.read));
   return dio;
 });

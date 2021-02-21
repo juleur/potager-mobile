@@ -14,30 +14,42 @@ final nearestAlimentsFuture =
 
 final nearestAlimentsStateNotifier =
     StateNotifierProvider<NearestAlimentsStateNotifier>(
-        (ref) => NearestAlimentsStateNotifier(ref));
+        (ref) => NearestAlimentsStateNotifier(ref.read));
 
 class NearestAlimentsStateNotifier extends StateNotifier<List<NearestAliment>> {
-  NearestAlimentsStateNotifier(this.ref) : super([]) {
-    final homeRepo = ref.watch(homeRepositoryProvider);
-    final userService = ref.watch(userServiceProvider);
+  NearestAlimentsStateNotifier(this._read) : super([]) {
+    final homeRepo = _read(homeRepositoryProvider);
+    final userService = _read(userServiceProvider);
     _searchTerms
-        .debounceTime(const Duration(milliseconds: 800))
+        .debounceTime(const Duration(milliseconds: 500))
         .distinct()
         .asyncMap((search) async {
       final UserStorage user = await userService.currentUser;
 
       final List<NearestAliment> nearestAliments = await homeRepo
           .fetchNearestAliments(user.id, user.coordonnees, search);
+
       return nearestAliments;
     }).listen((na) {
-      state = na;
+      if (_isStateChanged(na)) state = na;
     });
   }
-  final ProviderReference ref;
+  final Reader _read;
 
   final BehaviorSubject<String> _searchTerms = BehaviorSubject<String>();
 
   Future<void> search(String aliment) async => _searchTerms.add(aliment);
 
+  void resetState() => state = [];
+
   void close() => _searchTerms.close();
+
+  bool _isStateChanged(List<NearestAliment> nearestAliments) {
+    if (state.length != nearestAliments.length) return true;
+    for (var i = 0; nearestAliments.length > i; i++) {
+      if (state[i].user.id != nearestAliments[i].user.id &&
+          state[i].aliment.id != nearestAliments[i].aliment.id) return true;
+    }
+    return false;
+  }
 }

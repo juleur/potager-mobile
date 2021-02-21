@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/all.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class JWTInterceptor extends Interceptor {
   JWTInterceptor(this._read);
 
   final Reader _read;
+  CancelToken cancelToken = CancelToken();
 
   @override
   Future<RequestOptions> onRequest(RequestOptions options) async {
@@ -34,6 +36,7 @@ class JWTInterceptor extends Interceptor {
         await _read(userServiceProvider).updateTokens(tokens);
         userStorage.jwt = tokens.jwt;
       } on MessageException catch (e) {
+        // _read(dioBlankProvider).close();
         _read(messageStateProvider).state = e.message;
         _read(userStatusStateProvider).state = UserStatus.notloggedIn;
       }
@@ -77,8 +80,13 @@ class RefreshTokensInterceptor extends Interceptor {
       return _read(dioDefaultProvider)
           .request<dynamic>(options.path, options: options);
     }
-    _read(messageStateProvider).state = response.message;
-    _read(userStatusStateProvider).state = UserStatus.notloggedIn;
+    print(response.errorCode == 41);
+    if (err.response.statusCode == 401 && response.errorCode == 41) {
+      _read(messageStateProvider).state = response.message;
+      await _read(userServiceProvider).delete;
+      _read(userStatusStateProvider).state = UserStatus.notloggedIn;
+      return err;
+    }
     return err;
   }
 }

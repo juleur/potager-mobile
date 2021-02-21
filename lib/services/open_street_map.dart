@@ -18,7 +18,9 @@ class OpenStreetMapService {
     }
 
     ///// À RETIRER /////
-    coord = [45.01529307528278, 1.911748066222551];
+    coord = [45.009429886858314, 1.8291307032760094];
+    ///// À RETIRER /////
+    await _read(userServiceProvider).addCoordonnees(coord[0], coord[1]);
 
     final response = await _read(dioBlankProvider).get<dynamic>(
         'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${coord[0]}&lon=${coord[1]}');

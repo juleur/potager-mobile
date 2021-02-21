@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:potager/management/dio/connectivity_provider.dart';
-import 'package:potager/management/dio/dio_provider.dart';
+import './../../../management/dio/connectivity_provider.dart';
+import './../../../management/dio/dio_provider.dart';
 
 class DioConnectivityRequestRetrier {
   DioConnectivityRequestRetrier(this._read);

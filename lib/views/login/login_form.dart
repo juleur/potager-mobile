@@ -24,8 +24,9 @@ class LoginForm extends ConsumerWidget {
         children: <Widget>[
           Text(
             translate['title'],
+            textScaleFactor: 2.0,
             style: const TextStyle(
-              fontSize: 40,
+              // fontSize: 40,
               fontWeight: FontWeight.w700,
             ),
           ),
